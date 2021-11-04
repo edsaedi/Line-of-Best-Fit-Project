@@ -36,8 +36,11 @@ namespace Line_of_Best_Fit_Project
             this.yValue = new System.Windows.Forms.NumericUpDown();
             this.Add = new System.Windows.Forms.Button();
             this.LinearRegression = new System.Windows.Forms.Button();
+            this.canvasPictureBox = new System.Windows.Forms.PictureBox();
+            this.RandomAdd = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.xValue)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.yValue)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canvasPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -93,19 +96,39 @@ namespace Line_of_Best_Fit_Project
             // 
             // LinearRegression
             // 
-            this.LinearRegression.Location = new System.Drawing.Point(652, 200);
+            this.LinearRegression.Location = new System.Drawing.Point(652, 274);
             this.LinearRegression.Name = "LinearRegression";
-            this.LinearRegression.Size = new System.Drawing.Size(120, 179);
+            this.LinearRegression.Size = new System.Drawing.Size(120, 105);
             this.LinearRegression.TabIndex = 6;
             this.LinearRegression.Text = "Regress";
             this.LinearRegression.UseVisualStyleBackColor = true;
             this.LinearRegression.Click += new System.EventHandler(this.LinearRegression_Click);
+            // 
+            // canvasPictureBox
+            // 
+            this.canvasPictureBox.Location = new System.Drawing.Point(46, 44);
+            this.canvasPictureBox.Name = "canvasPictureBox";
+            this.canvasPictureBox.Size = new System.Drawing.Size(449, 382);
+            this.canvasPictureBox.TabIndex = 7;
+            this.canvasPictureBox.TabStop = false;
+            // 
+            // RandomAdd
+            // 
+            this.RandomAdd.Location = new System.Drawing.Point(634, 191);
+            this.RandomAdd.Name = "RandomAdd";
+            this.RandomAdd.Size = new System.Drawing.Size(154, 62);
+            this.RandomAdd.TabIndex = 8;
+            this.RandomAdd.Text = "Add a Random Point";
+            this.RandomAdd.UseVisualStyleBackColor = true;
+            this.RandomAdd.Click += new System.EventHandler(this.RandomAdd_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.RandomAdd);
+            this.Controls.Add(this.canvasPictureBox);
             this.Controls.Add(this.LinearRegression);
             this.Controls.Add(this.Add);
             this.Controls.Add(this.yValue);
@@ -117,6 +140,7 @@ namespace Line_of_Best_Fit_Project
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.xValue)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.yValue)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.canvasPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -131,6 +155,8 @@ namespace Line_of_Best_Fit_Project
         private System.Windows.Forms.NumericUpDown yValue;
         private System.Windows.Forms.Button Add;
         private System.Windows.Forms.Button LinearRegression;
+        private System.Windows.Forms.PictureBox canvasPictureBox;
+        private System.Windows.Forms.Button RandomAdd;
     }
 }
 
