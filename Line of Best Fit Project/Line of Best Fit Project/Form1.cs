@@ -19,6 +19,9 @@ namespace Line_of_Best_Fit_Project
         Graphics gfx;
         int originX;
         int originY;
+        int maxIterations;
+
+        HashSet<Point> uniqueDataPoints = new HashSet<Point>();
 
         public Form1()
         {
@@ -35,6 +38,7 @@ namespace Line_of_Best_Fit_Project
             xValue.Maximum = originX - 5;
             yValue.Minimum = -originY + 5;
             yValue.Maximum = originY - 5;
+            maxIterations = 100000;
         }
 
         public static decimal LinearEquationSolver(decimal x)
@@ -92,17 +96,26 @@ namespace Line_of_Best_Fit_Project
             return summation / dataPoints.Count();
         }
 
-        private void Add_Click(object sender, EventArgs e)
+        private void canvasPictureBox_MouseClick(object sender, MouseEventArgs e)
         {
-            dataPoints.Add((xValue.Value, yValue.Value));
-            Graph();
+            var location = e.Location;
+            //this makes sure that you do not have duplicates
+            if (uniqueDataPoints.Add(location) == false)
+            {
+                return;
+            }
+
+            gfx.FillEllipse(Brushes.Black, location.X - 5, location.Y - 5, 10, 10);
+            dataPoints.Add((location.X - 5, location.Y - 5));
+            canvasPictureBox.Image = canvas;
         }
 
         private void LinearRegression_Click(object sender, EventArgs e)
         {
 
             var originalError = MeanAbsoluteError();
-            while (originalError > 0.1m)
+            int counter = 0;
+            while (originalError > 0.25m && counter <= maxIterations)
             {
                 var originalM = M;
                 var originalB = B;
@@ -120,9 +133,50 @@ namespace Line_of_Best_Fit_Project
                     M = originalM;
                     B = originalB;
                 }
+
+                counter++;
             }
 
+            yInterceptLabelValue.Text = B.ToString();
+            slopeLabelValue.Text = M.ToString();
+            Graph();
             DrawLine();
+
+        }
+
+
+
+        public void Graph()
+        {
+            gfx.Clear(Color.White);
+            gfx.DrawLine(new Pen(Color.Black), new Point(0, originY), new Point(canvasPictureBox.Width, originY));
+            gfx.DrawLine(new Pen(Color.Black), new Point(originX, 0), new Point(originX, canvasPictureBox.Height));
+
+            foreach (var point in dataPoints)
+            {
+                gfx.FillEllipse(Brushes.Black, (float)point.Item1, (float)point.Item2, 10, 10);
+            }
+
+            canvasPictureBox.Image = canvas;
+        }
+
+        public void DrawLine()
+        {
+            var yInitial = (int)LinearEquationSolver(0);
+            var yFinal = (int)LinearEquationSolver(canvasPictureBox.Width);
+            gfx.DrawLine(new Pen(Color.Red), new Point(0, yInitial), new Point(canvasPictureBox.Width, yFinal));
+            canvasPictureBox.Image = canvas;
+
+            canvasPictureBox.Invalidate();
+        }
+
+
+        //Obsolete functionalities
+
+        private void Add_Click(object sender, EventArgs e)
+        {
+            dataPoints.Add((xValue.Value, yValue.Value));
+            Graph();
         }
 
         private void RandomAdd_Click(object sender, EventArgs e)
@@ -135,25 +189,6 @@ namespace Line_of_Best_Fit_Project
             dataPoints.Add((x, y));
 
             Graph();
-        }
-
-        public void Graph()
-        {
-            gfx.Clear(Color.White);
-            gfx.DrawLine(new Pen(Color.Black), new Point(0, originY), new Point(canvasPictureBox.Width, originY));
-            gfx.DrawLine(new Pen(Color.Black), new Point(originX, 0), new Point(originX, canvasPictureBox.Height));
-
-            foreach (var point in dataPoints)
-            {
-                gfx.FillEllipse(Brushes.Black, (float)point.Item1 + originX - 5, -(float)point.Item2 + originY - 5, 10, 10);
-            }
-
-            canvasPictureBox.Image = canvas;
-        }
-
-        public void DrawLine()
-        {
-            gfx.DrawLine(new Pen(Color.Red), new Point(-originX, (int)LinearEquationSolver(-originX)), new Point(originX, (int)LinearEquationSolver(originX)));
         }
     }
 }
